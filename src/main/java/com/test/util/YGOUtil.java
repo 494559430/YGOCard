@@ -2,6 +2,7 @@ package com.test.util;
 
 import com.test.entity.YGOCard;
 import com.test.enums.DbType;
+import com.test.vo.YGOCardVo;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -68,6 +69,34 @@ public class YGOUtil {
             DbUtil.close(connection, statement, rs);
         }
         return null;
+    }
+
+    public static List<YGOCardVo> getCardsVoByName(String name) {
+        return getCardsVoByName(name, DbUtil.getDbType());
+    }
+
+    public static List<YGOCardVo> getCardsVoByName(String name, DbType dbType) {
+        List<YGOCardVo> cardList = new ArrayList<>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        try {
+            connection = DbUtil.getConnection(dbType);
+            String sql = "select id, name from texts where name like '%" + name + "%'";
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                YGOCardVo ygoCard = new YGOCardVo();
+                ygoCard.setId(rs.getInt("id"));
+                ygoCard.setName(rs.getString("name"));
+                cardList.add(ygoCard);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            DbUtil.close(connection, statement, rs);
+        }
+        return cardList;
     }
 
     /**
