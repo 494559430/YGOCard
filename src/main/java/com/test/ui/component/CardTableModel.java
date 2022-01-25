@@ -8,8 +8,8 @@ import java.util.List;
 
 public class CardTableModel extends AbstractTableModel {
     private List<YGOCardVo> list = new ArrayList<>();
-    private String[] columnNames = {"ID", "NAME"};
-
+    //private String[] columnNames = {"ID", "NAME"};
+    private String[] columnNames = { "NAME"};
     public CardTableModel() {
     }
 
@@ -35,13 +35,15 @@ public class CardTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         YGOCardVo info = list.get(rowIndex);
-        switch (columnIndex) {
+        //去掉查询列的卡片id
+        /*switch (columnIndex) {
             case 0:
                 return info.getId();
             case 1:
                 return info.getName();
         }
-        return null;
+        return null;*/
+        return info.getName();
     }
 
     @Override
